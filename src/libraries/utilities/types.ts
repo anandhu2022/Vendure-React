@@ -46,12 +46,10 @@ export interface productVariant {
         id: string;
         name: string;
         sku: string;
-        stockLevel: number;
+        stockLevel: string;
         currencyCode: string;
         price: number;
-        priceWithTax: {
-            value: number;
-        };
+        priceWithTax: number;
         featuredAsset: {
             id: string;
             preview: string;
