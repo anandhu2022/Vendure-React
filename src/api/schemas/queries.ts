@@ -86,6 +86,17 @@ query GetAllCollections {
   }
 }`;
 
+export const ACTIVE_CUSTOMER_QUERY = gql`
+  query ActiveCustomer {
+    activeCustomer {
+      id
+      emailAddress
+      firstName
+      lastName
+    }
+  }
+`;
+
 export const GET_PRODUCT_DETAILS = gql`
 query GetProductDetail($slug: String!) {
   product(slug: $slug) {

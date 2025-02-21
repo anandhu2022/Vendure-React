@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 
 const client = new ApolloClient({
-    link: new HttpLink({ uri: "http://localhost:3000/shop-api" }), // Check this URL
+    link: new HttpLink({ uri: "http://localhost:3000/shop-api", credentials: "include" }), // Check this URL
     cache: new InMemoryCache(),
 });
 

@@ -4,17 +4,19 @@ import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useQuery} from "@apollo/client";
 import HomeIcon from "@mui/icons-material/Home";
+import {useAuth} from "../../context/useAuth.ts";
 
 const NavMenu = () => {
     const {data} = useQuery(NAVIGATION_MENU);
     const [collections, setCollections] = useState<CollectionType[]>([]);
     const navigate = useNavigate();
-
+    const {user} = useAuth();
     useEffect(() => {
         if (data) {
             setCollections(data.collections?.items);
         }
     }, [data]);
+    if (!user) return;
 
     const topLevelCollectionPage = (slug: string) => {
         navigate(`/collections/${slug}`)
@@ -23,7 +25,7 @@ const NavMenu = () => {
     return (
         <div className="bg-gray-900 px-60 text-white flex felx-row gap-9 py-4 items-center">
             <Link to={'/'}>
-                <HomeIcon />
+                <HomeIcon/>
             </Link>
             {collections && collections.map(({id, name, slug}: CollectionType) => (
                 <div key={id} onClick={() => topLevelCollectionPage(slug)}>
