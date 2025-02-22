@@ -83,4 +83,5 @@ export interface buttonTypeProps {
 export interface SignInOrSignUpProps {
     isLogin?: boolean;
     setIsLogin: Dispatch<SetStateAction<boolean>>;
+    delay?: (delay: number) => Promise<void>;
 }
