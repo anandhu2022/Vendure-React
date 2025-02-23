@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { GET_ALL_COLLECTIONS, GET_COLLECTION } from "../api/queries.ts";
+import { GET_ALL_COLLECTIONS, GET_COLLECTION } from "../api/schemas/queries.ts";
 import { useQuery } from "@apollo/client";
 import { CollectionTypes } from "../components/NavBar.tsx";
 

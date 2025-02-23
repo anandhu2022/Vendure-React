@@ -6,9 +6,7 @@ const Header = () => {
     const {user, logout} = useAuth();
     return (
         <div className="bg-gray-900 flex flex-row justify-between px-60 py-2 items-center text-gray-200">
-            <Link to={'/'}>
-                <div className="text-xl">Vendure Store</div>
-            </Link>
+                <div className="text-xl">Welcome {user? user.emailAddress : "Guest"}</div>
             <Link to={'./login'}>
                 {user ? <Button buttonName={"Sign Out"} logOut={logout}/> : <Button buttonName={"Sign In"}/>}
             </Link>
