@@ -50,3 +50,25 @@ export const VERIFY_CUSTOMER_ACCOUNT = gql`
     }
   }
 `;
+
+export const ADD_TO_CART = gql`
+mutation AddToCart($productVariantId: ID!, $quantity: Int!) {
+    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {
+      ... on Order {
+        id
+        totalQuantity
+        lines {
+          id
+          quantity
+          productVariant {
+            id
+            name
+          }
+        }
+      }
+      ... on ErrorResult {
+        message
+      }
+    }
+  }
+`;

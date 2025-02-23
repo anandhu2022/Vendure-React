@@ -1,19 +1,21 @@
-import { ProductDetailsProps, productVariant } from "../libraries/utilities/types.ts";
-import { formatCurrency } from "../libraries/utilities/formatPrice.ts";
-import { GET_PRODUCT_DETAILS } from "../api/schemas/queries.ts";
+import {ProductDetailsProps, productVariant} from "../libraries/utilities/types.ts";
+import {formatCurrency} from "../libraries/utilities/formatPrice.ts";
+import {GET_PRODUCT_DETAILS} from "../api/schemas/queries.ts";
 import MuiBreadcrumbs from "../components/MuiBreadcrumbs.tsx";
-import { ChangeEvent, useState } from "react";
-import { Favorite } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import {ChangeEvent, useState} from "react";
+import {Favorite} from "@mui/icons-material";
+import {useParams} from "react-router-dom";
+import {useMutation, useQuery} from "@apollo/client";
+import {ADD_TO_CART} from "../api/schemas/mutations.ts";
 
 const Product = () => {
-    const { slug } = useParams();
-    const { data, loading, error } = useQuery(GET_PRODUCT_DETAILS, {
-        variables: { slug },
+    const {slug} = useParams();
+    const {data, loading, error} = useQuery(GET_PRODUCT_DETAILS, {
+        variables: {slug},
         skip: !slug
     });
 
+    const [addToCart] = useMutation(ADD_TO_CART);
     const productDetails: ProductDetailsProps | null = data?.product || null;
     const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
 
@@ -28,13 +30,23 @@ const Product = () => {
         setSelectedVariantId(event.target.value);
     };
 
+    const handleAddToCart = async (productVariantId: string) => {
+        const {data} = await addToCart({
+            variables: {
+                productVariantId,
+                quantity: 1,
+            }
+        })
+        console.log(data);
+    }
+
     return (
         <div className="px-60 py-9">
             <div className="text-4xl text-gray-900">{productDetails.name}</div>
-            <MuiBreadcrumbs />
+            <MuiBreadcrumbs/>
             <div className="flex flex-row gap-8 mt-4">
                 <img src={productDetails.featuredAsset.preview} alt="product-image"
-                     className="w-xl py-3 rounded-4xl object-cover" />
+                     className="w-xl py-3 rounded-4xl object-cover"/>
                 <div className="py-4 text-gray-700">
                     <div className="text-justify">{productDetails.description}</div>
 
@@ -56,14 +68,21 @@ const Product = () => {
                     )}
 
                     <div className="flex flex-row items-center mt-10 gap-8">
-                        <div className="text-4xl text-gray-800">{formatCurrency(selectedVariant?.priceWithTax || 0)}</div>
-                        <button className="bg-gray-800 text-white rounded-xl py-4 px-4 cursor-pointer">Add to Cart</button>
-                        <Favorite fontSize="large" className="cursor-pointer" />
+                        <div
+                            className="text-4xl text-gray-800">{formatCurrency(selectedVariant?.priceWithTax || 0)}</div>
+                        <Favorite fontSize="large" className="cursor-pointer"/>
                     </div>
-
+                    <button
+                        className="bg-gray-800 text-gray-400 rounded-xl py-2 px-2
+                        cursor-pointer mt-5 hover:bg-gray-950 hover:text-white"
+                        onClick={() => handleAddToCart(selectedVariantId ? selectedVariantId : productDetails.id)}>
+                        Add to Cart
+                    </button>
                     <div className="my-3 flex flex-row gap-5 items-center">
+
                         <div>{selectedVariant?.sku}</div>
-                        <div className={`rounded-2xl p-1 ${selectedVariant?.stockLevel === "IN_STOCK" ? "bg-green-300" : "bg-red-300"}`}>
+                        <div
+                            className={`rounded-2xl p-1 ${selectedVariant?.stockLevel === "IN_STOCK" ? "bg-green-300" : "bg-red-300"}`}>
                             {selectedVariant?.stockLevel === "IN_STOCK" ? "In stock" : "Out of Stock"}
                         </div>
                     </div>
