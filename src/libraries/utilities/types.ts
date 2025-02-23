@@ -45,22 +45,20 @@ export interface ProductDetailsProps {
 }
 
 export interface productVariant {
-    id: string;
-    name: string;
-    sku: string;
-    stockLevel: number;
-    currencyCode: string;
-    price: number;
-    priceWithTax: {
-        value: number;
-    };
-    featuredAsset: {
         id: string;
-        preview: string;
-    };
-    assets: {
-        id: string;
-        preview: string;
+        name: string;
+        sku: string;
+        stockLevel: string;
+        currencyCode: string;
+        price: number;
+        priceWithTax: number;
+        featuredAsset: {
+            id: string;
+            preview: string;
+        };
+        assets: {
+            id: string;
+            preview: string;
     };
 }
 
