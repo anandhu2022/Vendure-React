@@ -63,10 +63,18 @@ export interface productVariant {
 }
 
 export interface AuthContextType {
-    user: { id: string; emailAddress: string } | null;
+    user: UserProps | null;
     loading: boolean;
     logout: () => void;
     refetchUser: () => Promise<void>;
+}
+
+export interface UserProps {
+    id: string;
+    emailAddress: string;
+    firstName: string;
+    lastName: string;
+
 }
 
 export interface AuthProviderProps {
