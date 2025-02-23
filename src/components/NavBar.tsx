@@ -8,7 +8,7 @@ export interface CollectionTypes {
 }
 
 import {useQuery} from "@apollo/client";
-import {GET_TOP_LEVEL_COLLECTION} from "../api/queries.ts";
+import {GET_TOP_LEVEL_COLLECTION} from "../api/schemas/queries.ts";
 
 const NavBar = () => {
         const {data} = useQuery(GET_TOP_LEVEL_COLLECTION);

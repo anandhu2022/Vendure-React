@@ -1,3 +1,5 @@
+import {Dispatch, ReactNode, SetStateAction} from "react";
+
 export interface CollectionType {
     id: number;
     name: string;
@@ -58,4 +60,26 @@ export interface productVariant {
             id: string;
             preview: string;
     };
+}
+
+export interface AuthContextType {
+    user: { id: string; emailAddress: string } | null;
+    loading: boolean;
+    logout: () => void;
+    refetchUser: () => Promise<void>;
+}
+
+export interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export interface buttonTypeProps {
+    buttonName: string;
+    logOut?: () => void;
+}
+
+export interface SignInOrSignUpProps {
+    isLogin?: boolean;
+    setIsLogin: Dispatch<SetStateAction<boolean>>;
+    delay?: (delay: number) => Promise<void>;
 }
