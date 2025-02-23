@@ -1,4 +1,4 @@
-import {AuthProviderProps} from "../libraries/utilities/types.ts";
+import {AuthProviderProps, UserProps} from "../libraries/utilities/types.ts";
 import {ACTIVE_CUSTOMER_QUERY} from "../api/schemas/queries.ts";
 import {LOGOUT_MUTATION} from "../api/schemas/mutations.ts";
 import {useMutation, useQuery} from "@apollo/client";
@@ -9,7 +9,7 @@ import {AuthContext} from "./useAuth.ts";
 
 const AuthProvider: FC<AuthProviderProps> = ({children}) => {
     const {data, loading, refetch} = useQuery(ACTIVE_CUSTOMER_QUERY);
-    const [user, setUser] = useState<{ id: string; emailAddress: string; firstName: string } | null>(null);
+    const [user, setUser] = useState<UserProps | null>(null);
     const navigate = useNavigate();
     const [logoutMutation] = useMutation(LOGOUT_MUTATION);
 
