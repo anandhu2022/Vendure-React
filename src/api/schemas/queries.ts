@@ -161,3 +161,27 @@ query GetCollection($slug: String!) {
     }
   }
 }`;
+
+export const GET_CART = gql`
+query {
+  activeOrder {
+    id
+    totalQuantity
+    totalWithTax
+    lines {
+      id
+      quantity
+      productVariant {
+        id
+        name
+        priceWithTax
+        product {
+          featuredAsset {
+            preview
+          }
+        }
+      }
+    }
+  }
+}
+`;

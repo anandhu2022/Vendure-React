@@ -45,20 +45,20 @@ export interface ProductDetailsProps {
 }
 
 export interface productVariant {
+    id: string;
+    name: string;
+    sku: string;
+    stockLevel: string;
+    currencyCode: string;
+    price: number;
+    priceWithTax: number;
+    featuredAsset: {
         id: string;
-        name: string;
-        sku: string;
-        stockLevel: string;
-        currencyCode: string;
-        price: number;
-        priceWithTax: number;
-        featuredAsset: {
-            id: string;
-            preview: string;
-        };
-        assets: {
-            id: string;
-            preview: string;
+        preview: string;
+    };
+    assets: {
+        id: string;
+        preview: string;
     };
 }
 
@@ -90,4 +90,34 @@ export interface SignInOrSignUpProps {
     isLogin?: boolean;
     setIsLogin: Dispatch<SetStateAction<boolean>>;
     delay?: (delay: number) => Promise<void>;
+}
+
+export interface CartDataProps {
+    code: string;
+    id: string;
+    totalQuantity: number;
+    totalWithTax: number;
+    __typename: string;
+    items: CartItemProps[];
+}
+
+export interface CartItemProps {
+    id: string;
+    productVariant: cartVariant;
+    quantity: number;
+    __typename: string;
+}
+
+export interface cartVariant {
+    id: string;
+    name: string;
+    priceWithTax: number;
+    product: {
+        featuredAsset: {
+            preview: string;
+            __typename: string;
+        };
+        __typename: string;
+    }
+    __typename: string;
 }

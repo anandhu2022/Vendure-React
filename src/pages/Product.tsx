@@ -2,11 +2,11 @@ import {ProductDetailsProps, productVariant} from "../libraries/utilities/types.
 import {formatCurrency} from "../libraries/utilities/formatPrice.ts";
 import {GET_PRODUCT_DETAILS} from "../api/schemas/queries.ts";
 import MuiBreadcrumbs from "../components/MuiBreadcrumbs.tsx";
-import {ChangeEvent, useState} from "react";
-import {Favorite} from "@mui/icons-material";
-import {useParams} from "react-router-dom";
-import {useMutation, useQuery} from "@apollo/client";
 import {ADD_TO_CART} from "../api/schemas/mutations.ts";
+import {useMutation, useQuery} from "@apollo/client";
+import {Favorite} from "@mui/icons-material";
+import {ChangeEvent, useState} from "react";
+import {useParams} from "react-router-dom";
 
 const Product = () => {
     const {slug} = useParams();
@@ -18,7 +18,7 @@ const Product = () => {
     const [addToCart] = useMutation(ADD_TO_CART);
     const productDetails: ProductDetailsProps | null = data?.product || null;
     const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
-
+    const [message, setMessage] = useState<string | null>(null)
     const selectedVariant: productVariant | undefined =
         productDetails?.variants.find((v) => v.id === selectedVariantId) || productDetails?.variants[0];
 
@@ -38,12 +38,22 @@ const Product = () => {
             }
         })
         console.log(data);
+        if (data?.addItemToOrder?.__typename == "Order") {
+            setMessage("Product added to cart successfully");
+            setTimeout(() => setMessage(null), 3000);
+        } else {
+            setMessage("Failed to add product to cart");
+            setTimeout(() => setMessage(null), 3000);
+        }
     }
 
     return (
         <div className="px-60 py-9">
             <div className="text-4xl text-gray-900">{productDetails.name}</div>
             <MuiBreadcrumbs/>
+            <div className="min-h-7">
+                {message && <div className={`${message.includes('successfully') ? 'bg-green-300' : 'bg-red-300'} text-center rounded-2xl text-xm`}>{message}</div>}
+            </div>
             <div className="flex flex-row gap-8 mt-4">
                 <img src={productDetails.featuredAsset.preview} alt="product-image"
                      className="w-xl py-3 rounded-4xl object-cover"/>
@@ -75,7 +85,16 @@ const Product = () => {
                     <button
                         className="bg-gray-800 text-gray-400 rounded-xl py-2 px-2
                         cursor-pointer mt-5 hover:bg-gray-950 hover:text-white"
-                        onClick={() => handleAddToCart(selectedVariantId ? selectedVariantId : productDetails.id)}>
+                        onClick={async () => {
+                            if (selectedVariantId) {
+                                await handleAddToCart(selectedVariantId);
+                            } else if (selectedVariant) {
+                                await handleAddToCart(selectedVariant.id);
+                            } else {
+                                console.error("No valid variant selected!");
+                            }
+                        }}
+                    >
                         Add to Cart
                     </button>
                     <div className="my-3 flex flex-row gap-5 items-center">
